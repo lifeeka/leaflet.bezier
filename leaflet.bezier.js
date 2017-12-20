@@ -1,12 +1,4 @@
-/*
- * Leaflet.curve v0.1.0 - a plugin for Leaflet mapping library. https://github.com/elfalem/Leaflet.curve
- * (c) elfalem 2015
- */
-/*
- * note that SVG (x, y) corresponds to (long, lat)
- */
-
-L.Curve = L.Path.extend({
+L.Bezier = L.Path.extend({
 	options: {
 	},
 	
@@ -162,8 +154,8 @@ L.Curve = L.Path.extend({
 	}	
 });
 
-L.curve = function (path, options){
-	return new L.Curve(path, options);
+L.bezier = function (path, options){
+	return new L.Bezier(path, options);
 };
 
 L.SVG.include({
