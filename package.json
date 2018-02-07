@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "babel src --presets babel-preset-es2015 --out-dir dist",
     "start": "npm run build && npm run open",
-    "open": "node  node_modules/http-server/bin/http-server"
+    "open": "node  node_modules/http-server/bin/http-server -o"
   },
   "repository": {
     "type": "git",

@@ -1,10 +1,9 @@
-L.Bezier = L.Path.extend({
+let Bezier = L.Path.extend({
     options: {},
 
     initialize: function (path, options) {
 
-
-        if (!path.mid || path.mid[0] === undefined) {
+        if ((!path.mid || path.mid[0] === undefined)) {
             path.mid = this.getMidPoint(path.from, path.to, (path.mid ? path.mid.deep : 4));
         }
 
@@ -61,18 +60,9 @@ L.Bezier = L.Path.extend({
     _computeBounds: function () {
 
         let bound = new L.LatLngBounds();
+
         bound.extend(this._coords.from);
-
-        if (Array.isArray(this._coords.to[0])) {//for multi destination
-            for (let i = 0; this._coords.to.length < i; i++) {
-                bound.extend(this._coords.to[i]);
-            }
-        }
-        else {
-            bound.extend(this._coords.to);//for single destination
-        }
-
-        console.log(this._coords.mid);
+        bound.extend(this._coords.to);//for single destination
         bound.extend(this._coords.mid);
 
         return bound;
@@ -172,11 +162,8 @@ L.Bezier = L.Path.extend({
 
     _project: function () {
 
-
         this._points = [];
 
-
-        //for only one destination
         this._points.push('M');
 
         let curPoint = this._map.latLngToLayerPoint(this._coords.from);
@@ -190,18 +177,11 @@ L.Bezier = L.Path.extend({
         curPoint = this._map.latLngToLayerPoint(this._coords.to);
         this._points.push(curPoint);
 
-        //for multi destination
-        console.log(this._coords.to, this._coords.to.length);
-
 
     },
 
 
 });
-
-L.bezier = function (path, options) {
-    return new L.Bezier(path, options);
-};
 
 L.SVG.include({
     _updatecurve: function (layer) {
@@ -246,3 +226,31 @@ L.SVG.include({
     },
 
 });
+
+L.bezier = function (path, options) {
+
+    if (Array.isArray(path.to[0])) {
+
+        let paths = [];
+
+        for (let i = 0; path.to.length > i; i++) {
+
+            let current_destination = path.to[i];
+
+            let current_path = Object.assign({}, path);;
+            current_path.to = current_destination;
+
+            console.log(current_path);
+            paths.push(new Bezier(current_path, options));
+        }
+        return L.layerGroup(paths);
+    }
+    else {
+        let path = new Bezier(path, options);
+        return L.layerGroup([path]);
+    }
+
+
+};
+
+
