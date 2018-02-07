@@ -1,0 +1,43 @@
+{
+  "name": "leaflet.bezier",
+  "version": "0.0.0-alpha",
+  "description": "Leaflet curve line",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel src --presets babel-preset-es2015 --out-dir dist",
+    "start": "npm run build && npm run open",
+    "open": "node  node_modules/http-server/bin/http-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lifeeka/leaflet.bezier.git"
+  },
+  "keywords": [
+    "Leaflet",
+    "flight",
+    "curve",
+    "round",
+    "line",
+    "routebezier\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D"
+  ],
+  "author": "Supun Praneeth",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lifeeka/leaflet.bezier/issues"
+  },
+  "homepage": "https://github.com/lifeeka/leaflet.bezier#readme",
+  "dependencies": {
+    "leaflet": "^1.3.1",
+    "snapsvg": "^0.5.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-plugin-transform-remove-console": "^6.8.5",
+    "babel-preset-es2015": "^6.24.1",
+    "chai": "^4.1.2",
+    "http-server": "^0.11.1",
+    "mocha": "^4.0.1"
+  }
+}
