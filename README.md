@@ -1,10 +1,5 @@
 <p align="center"><img src="https://raw.githubusercontent.com/lifeeka/leaflet.bezier/supun-dev/logo.png"></p>
 
-<p align="center">
-
-![alt text](https://raw.githubusercontent.com/lifeeka/leaflet.bezier/supun-dev/demo/demo.gif "Logo Title Text 1")
-</p>
-
 
 ## Leaflet Bezier
 Create bezier with leaflet
@@ -34,6 +29,8 @@ npm i leaflet.bezier --save
 ```
 
 ### Demo
+![alt text](https://raw.githubusercontent.com/lifeeka/leaflet.bezier/supun-dev/demo/demo.gif "Logo Title Text 1")
+
 ```
 npm run start
 ```
