@@ -1,4 +1,4 @@
-<p align="center"><img src="https://raw.githubusercontent.com/lifeeka/leaflet.bezier/supun-dev/logo.png"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/lifeeka/leaflet.bezier/master/logo.png"></p>
 
 
 ## Leaflet Bezier
@@ -29,7 +29,7 @@ npm i leaflet.bezier --save
 ```
 
 ### Demo
-![alt text](https://raw.githubusercontent.com/lifeeka/leaflet.bezier/supun-dev/demo/demo.gif "Logo Title Text 1")
+![alt text](https://raw.githubusercontent.com/lifeeka/leaflet.bezier/master/demo/demo.gif "Logo Title Text 1")
 
 ```
 npm run start
