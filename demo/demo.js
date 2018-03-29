@@ -8,7 +8,7 @@ $(function () {
     }).addTo(map);
 
 
-    let dash_straight = {
+    var dash_straight = {
         color: 'rgb(145, 146, 150)',
         fillColor: 'rgb(145, 146, 150)',
         dashArray: 8,
@@ -16,54 +16,34 @@ $(function () {
         weight: '1',
     };
 
-
-    /*L.bezier({
-        from: [6.898507, 79.756158],
-        to: [-24.714010, 133.890405],
-        mid:{
-            deep:4
-        },
-        icon: {
-            path: "plane.png"
-        }
-    },dash_straight).addTo(map);
-
     L.bezier({
-        from: [6.898507, 79.756158],
-        to: [43.628646, 12.650990],
-        mid:{
-            deep:4
-        },
-        icon: {
-            path: "plane.png"
-        }
-    },dash_straight).addTo(map);*/
-
-    let cordinate = [];
-    for(let i = 0;i<10;i++){
-        cordinate[i] = [47.222537  + i-3,  2.256532 + i*5];
-    }
-
-     L.bezier({
-        from: [6.898507, 79.756158],
-        to: cordinate,
-
-        icon: {
-            path: "plane.png"
-        }
-    },dash_straight).addTo(map);
-
-
-  /*L.bezier({
-        from: [6.898507, 79.756158],
-        to: [ -24.714010, 133.890405],
+        path: [
+            [
+                {lat: 7.8731, lng: 80.7718, slide: 'RIGHT_ROUND'},//Sri Lanka
+                {lat: -25.2744, lng: 133.7751, slide: 'LEFT_ROUND'},//Australia
+                {lat: 36.2048, lng: 138.2529}//Japan
+            ],
+            [
+                {lat: 7.8731, lng: 80.7718, slide: 'RIGHT_ROUND'},//Sri Lanka
+                {lat: 3.1390, lng: 101.6869}
+            ],
+            [
+                {lat: 7.8731, lng: 80.7718, slide: 'RIGHT_ROUND',deep:"8"},//Sri Lanka
+                {lat: 41.8719, lng: 12.5674}
+            ],[
+                {lat: -25.2744, lng: 133.7751},//Australia
+                {lat: -40.9006, lng: 174.8860}//Japan
+            ],
+            [
+                {lat: 7.8731, lng: 80.7718, slide: 'RIGHT_ROUND'},
+                {lat: -18.7669, lng: 46.8691},
+            ]
+        ],
 
         icon: {
             path: "plane.png"
         }
-    },dash_straight).addTo(map);*/
-
-
+    }, dash_straight).addTo(map);
 
 
 });

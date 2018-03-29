@@ -1,15 +1,15 @@
 let Bezier = L.Path.extend({
     options: {},
+    initialize: function (path, icon, options) {
 
-    initialize: function (path, options) {
-
-        if ((!path.mid || path.mid[0] === undefined)) {
-            path.mid = this.getMidPoint(path.from, path.to, (path.mid ? path.mid.deep : 4));
+        if (!path.mid || path.mid[0] === undefined) {
+            path.mid = this.getMidPoint(path.from, path.to, (path.from.deep ? path.from.deep : 4), path.from.slide);
         }
 
         L.setOptions(this, options);
         this._initialUpdate = true;
         this._setPath(path);
+        this.icon = icon;
     },
 
     getPath: function () {
@@ -24,26 +24,31 @@ let Bezier = L.Path.extend({
     getBounds: function () {
         return this._bounds;
     },
-    getMidPoint: function (from, to, deep) {
+    getMidPoint: function (from, to, deep, round_side = 'LEFT_ROUND') {
+
+        let offset = 3.14;
+
+        if (round_side === 'RIGHT_ROUND')
+            offset = offset * -1;
 
         let latlngs = [];
 
         let latlng1 = from,
             latlng2 = to;
 
-        let offsetX = latlng2[1] - latlng1[1],
-            offsetY = latlng2[0] - latlng1[0];
+        let offsetX = latlng2.lng - latlng1.lng,
+            offsetY = latlng2.lat - latlng1.lat;
 
         let r = Math.sqrt(Math.pow(offsetX, 2) + Math.pow(offsetY, 2)),
             theta = Math.atan2(offsetY, offsetX);
 
-        let thetaOffset = (3.14 / (deep ? deep : 4));
+        let thetaOffset = (offset / (deep ? deep : 4));
 
         let r2 = (r / 2) / (Math.cos(thetaOffset)),
             theta2 = theta + thetaOffset;
 
-        let midpointX = (r2 * Math.cos(theta2)) + latlng1[1],
-            midpointY = (r2 * Math.sin(theta2)) + latlng1[0];
+        let midpointX = (r2 * Math.cos(theta2)) + latlng1.lng,
+            midpointY = (r2 * Math.sin(theta2)) + latlng1.lat;
 
         let midpointLatLng = [midpointY, midpointX];
 
@@ -68,7 +73,6 @@ let Bezier = L.Path.extend({
         return bound;
     },
 
-    //TODO: use a centroid algorithm instead
     getCenter: function () {
         return this._bounds.getCenter();
     },
@@ -89,12 +93,14 @@ let Bezier = L.Path.extend({
     },
     setAnimatePlane(path) {
 
+
         if (this.spaceship_img)
             this.spaceship_img.remove();
 
         let SnapSvg = Snap('.leaflet-overlay-pane>svg');
 
-        let spaceship_img = this.spaceship_img = SnapSvg.image(this._coords.icon.path).attr({
+
+        let spaceship_img = this.spaceship_img = SnapSvg.image(this.icon.path).attr({
             visibility: "hidden"
         });
 
@@ -214,7 +220,7 @@ L.SVG.include({
         let point, curCommand, str = '';
         for (let i = 0; i < points.length; i++) {
             point = points[i];
-            if (typeof point == 'string' || point instanceof String) {
+            if (typeof point === 'string' || point instanceof String) {
                 curCommand = point;
                 str += curCommand;
             } else
@@ -227,29 +233,26 @@ L.SVG.include({
 
 });
 
-L.bezier = function (path, options) {
+L.bezier = function (config, options) {
 
-    if (Array.isArray(path.to[0])) {
+    let paths = [];
 
-        let paths = [];
+    for (let i = 0; config.path.length > i; i++) {
 
-        for (let i = 0; path.to.length > i; i++) {
 
-            let current_destination = path.to[i];
+        let last_destination = false;
+        for (let c = 0; config.path[i].length > c; c++) {
 
-            let current_path = Object.assign({}, path);;
-            current_path.to = current_destination;
+            let current_destination = config.path[i][c];
+            if (last_destination) {
+                let path_pair = {from: last_destination, to: current_destination};
+                paths.push(new Bezier(path_pair, config.icon, options));
+            }
 
-            console.log(current_path);
-            paths.push(new Bezier(current_path, options));
+            last_destination = config.path[i][c];
         }
-        return L.layerGroup(paths);
     }
-    else {
-        let path = new Bezier(path, options);
-        return L.layerGroup([path]);
-    }
-
+    return L.layerGroup(paths);
 
 };
 
