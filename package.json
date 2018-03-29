@@ -19,7 +19,8 @@
     "curve",
     "round",
     "line",
-    "routebezier\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D"
+    "route",
+    "bezier"
   ],
   "author": "Supun Praneeth",
   "license": "MIT",
