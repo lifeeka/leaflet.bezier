@@ -1,6 +1,6 @@
 {
   "name": "leaflet.bezier",
-  "version": "0.0.2-alpha",
+  "version": "0.0.3-alpha",
   "description": "Leaflet curve line",
   "main": "dist/leaflet.bezier.js",
   "scripts": {
