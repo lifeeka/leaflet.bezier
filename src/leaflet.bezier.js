@@ -1,3 +1,46 @@
+L.SVG.include({
+    _updatecurve: function (layer) {
+        let svg_path = this._curvePointsToPath(layer._points);
+        this._setPath(layer, svg_path);
+
+        if (layer.options.animate) {
+            let path = layer._path;
+            let length = path.getTotalLength();
+
+            if (!layer.options.dashArray) {
+                path.style.strokeDasharray = length + ' ' + length;
+            }
+
+            if (layer._initialUpdate) {
+                path.animate([
+                    {strokeDashoffset: length},
+                    {strokeDashoffset: 0}
+                ], layer.options.animate);
+                layer._initialUpdate = false;
+            }
+        }
+
+        return svg_path;
+    },
+
+
+    _curvePointsToPath: function (points) {
+        let point, curCommand, str = '';
+        for (let i = 0; i < points.length; i++) {
+            point = points[i];
+            if (typeof point === 'string' || point instanceof String) {
+                curCommand = point;
+                str += curCommand;
+            } else
+                str += point.x + ',' + point.y + ' ';
+
+
+        }
+        return str || 'M0 0';
+    },
+
+});
+
 let Bezier = L.Path.extend({
     options: {},
     initialize: function (path, icon, options) {
@@ -92,7 +135,6 @@ let Bezier = L.Path.extend({
 
     },
     setAnimatePlane(path) {
-
 
         if (this.spaceship_img)
             this.spaceship_img.remove();
@@ -189,57 +231,9 @@ let Bezier = L.Path.extend({
 
 });
 
-L.SVG.include({
-    _updatecurve: function (layer) {
-
-        let svg_path = this._curvePointsToPath(layer._points);
-        this._setPath(layer, svg_path);
-
-        if (layer.options.animate) {
-            let path = layer._path;
-            let length = path.getTotalLength();
-
-            if (!layer.options.dashArray) {
-                path.style.strokeDasharray = length + ' ' + length;
-            }
-
-            if (layer._initialUpdate) {
-                path.animate([
-                    {strokeDashoffset: length},
-                    {strokeDashoffset: 0}
-                ], layer.options.animate);
-                layer._initialUpdate = false;
-            }
-        }
-
-        return svg_path;
-    },
-
-
-    _curvePointsToPath: function (points) {
-        let point, curCommand, str = '';
-        for (let i = 0; i < points.length; i++) {
-            point = points[i];
-            if (typeof point === 'string' || point instanceof String) {
-                curCommand = point;
-                str += curCommand;
-            } else
-                str += point.x + ',' + point.y + ' ';
-
-
-        }
-        return str || 'M0 0';
-    },
-
-});
-
 L.bezier = function (config, options) {
-
     let paths = [];
-
     for (let i = 0; config.path.length > i; i++) {
-
-
         let last_destination = false;
         for (let c = 0; config.path[i].length > c; c++) {
 
