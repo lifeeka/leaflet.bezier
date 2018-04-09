@@ -51,96 +51,28 @@ let Bezier = L.Path.extend({
 
         L.setOptions(this, options);
         this._initialUpdate = true;
-        this._setPath(path);
+        this.setPath(path);
         this.icon = icon;
-    },
-
-    getPath: function () {
-        return this._coords;
-    },
-
-    setPath: function (path) {
-        this._setPath(path);
-        return this.redraw();
-    },
-
-    getBounds: function () {
-        return this._bounds;
-    },
-    getMidPoint: function (from, to, deep, round_side = 'LEFT_ROUND') {
-
-        let offset = 3.14;
-
-        if (round_side === 'RIGHT_ROUND')
-            offset = offset * -1;
-
-        let latlngs = [];
-
-        let latlng1 = from,
-            latlng2 = to;
-
-        let offsetX = latlng2.lng - latlng1.lng,
-            offsetY = latlng2.lat - latlng1.lat;
-
-        let r = Math.sqrt(Math.pow(offsetX, 2) + Math.pow(offsetY, 2)),
-            theta = Math.atan2(offsetY, offsetX);
-
-        let thetaOffset = (offset / (deep ? deep : 4));
-
-        let r2 = (r / 2) / (Math.cos(thetaOffset)),
-            theta2 = theta + thetaOffset;
-
-        let midpointX = (r2 * Math.cos(theta2)) + latlng1.lng,
-            midpointY = (r2 * Math.sin(theta2)) + latlng1.lat;
-
-        let midpointLatLng = [midpointY, midpointX];
-
-        latlngs.push(latlng1, midpointLatLng, latlng2);
-
-        return midpointLatLng;
-    },
-
-    _setPath: function (path) {
-        this._coords = path;
-        this._bounds = this._computeBounds();
-    },
-
-    _computeBounds: function () {
-
-        let bound = new L.LatLngBounds();
-
-        bound.extend(this._coords.from);
-        bound.extend(this._coords.to);//for single destination
-        bound.extend(this._coords.mid);
-
-        return bound;
-    },
-
-    getCenter: function () {
-        return this._bounds.getCenter();
-    },
-
-    _update: function () {
-        if (!this._map) {
-            return;
-        }
-
-        this._updatePath();
-    },
-
-    _updatePath: function () {
-
-        let path = this._renderer._updatecurve(this);
-        this.setAnimatePlane(path);
 
     },
-    setAnimatePlane(path) {
+    //Juast after path is added
+    onAdd: function (map) {
+        this._renderer._initPath(this);
+        this._reset();
+        this._renderer._addPath(this);
+
+        // TODO ajust plane acording to zoom
+        map.on('zoom', function(){
+
+        });
+
+    },
+    setAnimatePlane: function(path) {
 
         if (this.spaceship_img)
             this.spaceship_img.remove();
 
         let SnapSvg = Snap('.leaflet-overlay-pane>svg');
-
 
         let spaceship_img = this.spaceship_img = SnapSvg.image(this.icon.path).attr({
             visibility: "hidden"
@@ -207,7 +139,76 @@ let Bezier = L.Path.extend({
 
 
     },
+    getPath: function () {
+        return this._coords;
+    },
+    setPath: function (path) {
+        this._setPath(path);
+        return this.redraw();
+    },
+    getBounds: function () {
+        return this._bounds;
+    },
+    getMidPoint: function (from, to, deep, round_side = 'LEFT_ROUND') {
 
+        let offset = 3.14;
+
+        if (round_side === 'RIGHT_ROUND')
+            offset = offset * -1;
+
+        let latlngs = [];
+
+        let latlng1 = from,
+            latlng2 = to;
+
+        let offsetX = latlng2.lng - latlng1.lng,
+            offsetY = latlng2.lat - latlng1.lat;
+
+        let r = Math.sqrt(Math.pow(offsetX, 2) + Math.pow(offsetY, 2)),
+            theta = Math.atan2(offsetY, offsetX);
+
+        let thetaOffset = (offset / (deep ? deep : 4));
+
+        let r2 = (r / 2) / (Math.cos(thetaOffset)),
+            theta2 = theta + thetaOffset;
+
+        let midpointX = (r2 * Math.cos(theta2)) + latlng1.lng,
+            midpointY = (r2 * Math.sin(theta2)) + latlng1.lat;
+
+        let midpointLatLng = [midpointY, midpointX];
+
+        latlngs.push(latlng1, midpointLatLng, latlng2);
+
+        return midpointLatLng;
+    },
+    _setPath: function (path) {
+        this._coords = path;
+        this._bounds = this._computeBounds();
+    },
+    _computeBounds: function () {
+
+        let bound = new L.LatLngBounds();
+
+        bound.extend(this._coords.from);
+        bound.extend(this._coords.to);//for single destination
+        bound.extend(this._coords.mid);
+
+        return bound;
+    },
+    getCenter: function () {
+        return this._bounds.getCenter();
+    },
+    _update: function () {
+        if (!this._map) {
+            return;
+        }
+        this._updatePath();
+    },
+    _updatePath: function () {
+        //animated plane
+        let path = this._renderer._updatecurve(this);
+        this.setAnimatePlane(path);
+    },
     _project: function () {
 
         this._points = [];
