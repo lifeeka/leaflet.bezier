@@ -62,12 +62,14 @@ let Bezier = L.Path.extend({
         this._renderer._addPath(this);
 
         // TODO ajust plane acording to zoom
-        map.on('zoom', function(){
+        map.on('zoom', function () {
 
         });
 
     },
-    setAnimatePlane: function(path) {
+    setAnimatePlane: function (path) {
+
+        let self = this;
 
         if (this.spaceship_img)
             this.spaceship_img.remove();
@@ -108,7 +110,7 @@ let Bezier = L.Path.extend({
                 visibility: "visible"
             });
 
-            spaceship_img.attr({width: width, height: height});
+            spaceship_img.attr({width: width, height: height, class: self.icon.class});
 
             last_step = step;
 
