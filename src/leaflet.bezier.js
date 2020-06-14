@@ -1,5 +1,5 @@
 L.SVG.include({
-    _updatecurve: function (layer) {
+    _updateCurve: function (layer) {
         let svg_path = this._curvePointsToPath(layer._points);
         this._setPath(layer, svg_path);
 
@@ -22,8 +22,6 @@ L.SVG.include({
 
         return svg_path;
     },
-
-
     _curvePointsToPath: function (points) {
         let point, curCommand, str = '';
         for (let i = 0; i < points.length; i++) {
@@ -38,7 +36,6 @@ L.SVG.include({
         }
         return str || 'M0 0';
     },
-
 });
 
 let Bezier = L.Path.extend({
@@ -55,17 +52,15 @@ let Bezier = L.Path.extend({
         this.icon = icon;
 
     },
-    //Juast after path is added
     onAdd: function (map) {
         this._renderer._initPath(this);
         this._reset();
         this._renderer._addPath(this);
 
-        // TODO ajust plane acording to zoom
+        // TODO adjust plane according to zoom
         map.on('zoom', function () {
 
         });
-
     },
     onRemove: function() {
         if (this.spaceship_img)
@@ -83,64 +78,62 @@ let Bezier = L.Path.extend({
         let SnapSvg = Snap('.leaflet-overlay-pane>svg');
 
         let spaceship_img = this.spaceship_img = SnapSvg.image(this.icon.path).attr({
-            visibility: "hidden"
+            visibility: 'hidden'
         });
 
 
         let spaceship = SnapSvg.group(spaceship_img);
-        let flight_path = SnapSvg.path(path).attr({
+        let flightPath = SnapSvg.path(path).attr({
             'fill': 'none',
             'stroke': 'none'
         });
 
-        let full_path_length = Snap.path.getTotalLength(flight_path);
-        let half_path_length = full_path_length / 2;
-        let third_path_length = full_path_length / 3;
-        let forth_path_length = full_path_length / 4;
+        let fullPathLength = Snap.path.getTotalLength(flightPath);
+        let destinationPathLength = fullPathLength / 2; //default half
 
+        if (this.options.iconTravelLength && !isNaN(parseFloat(this.options.iconTravelLength))) {
+            destinationPathLength = fullPathLength * parseFloat(this.options.iconTravelLength);
+        }
 
-        let width = forth_path_length / this._map.getZoom();
-        let height = forth_path_length / this._map.getZoom();
+        let halfPathLength = (destinationPathLength) - (destinationPathLength / (this.options.easeOutPiece ? this.options.easeOutPiece : 50));
 
-        width = Math.min(Math.max(width, 30), 64);
-        height = Math.min(Math.max(height, 30), 64);
+        let width = halfPathLength / this._map.getZoom();
+        let height = halfPathLength / this._map.getZoom();
 
+        width = Math.min(Math.max(width, 30), this.options.iconMaxWidth ? this.options.iconMaxWidth : 50);
+        height = Math.min(Math.max(height, 30), this.options.iconMaxHeight ? this.options.iconMaxHeight : 50);
 
-        let last_step = 0;
+        let fullAnimatedTime =  this.options.fullAnimatedTime ? this.options.fullAnimatedTime : 7000;
+        let easeOutTime =  this.options.easeOutTime ? this.options.easeOutTime : 2500;
 
-
-        Snap.animate(0, forth_path_length, function (step) {
+        let lastStep = 0;
+        Snap.animate(0, halfPathLength, function (step) {
 
             //show image when plane start to animate
             spaceship_img.attr({
-                visibility: "visible"
+                visibility: 'visible'
             });
 
             spaceship_img.attr({width: width, height: height, class: self.icon.class});
+            lastStep = step;
 
-            last_step = step;
-
-            let moveToPoint = Snap.path.getPointAtLength(flight_path, step);
+            let moveToPoint = Snap.path.getPointAtLength(flightPath, step);
 
             let x = moveToPoint.x - (width / 2);
             let y = moveToPoint.y - (height / 2);
 
-
             spaceship.transform('translate(' + x + ',' + y + ') rotate(' + (moveToPoint.alpha - 90) + ', ' + width / 2 + ', ' + height / 2 + ')');
 
-        }, 2500, mina.easeout, function () {
-
-            Snap.animate(forth_path_length, half_path_length, function (step) {
-
-                last_step = step;
-                let moveToPoint = Snap.path.getPointAtLength(flight_path, step);
+        }, easeOutTime, mina.easeout, function () {
+            Snap.animate(halfPathLength, destinationPathLength, function (step) {
+                lastStep = step;
+                let moveToPoint = Snap.path.getPointAtLength(flightPath, step);
 
                 let x = moveToPoint.x - width / 2;
                 let y = moveToPoint.y - height / 2;
                 spaceship.transform('translate(' + x + ',' + y + ') rotate(' + (moveToPoint.alpha - 90) + ', ' + width / 2 + ', ' + height / 2 + ')');
-            }, 7000, mina.easein, function () {
-                //done
-
+            }, fullAnimatedTime, mina.easein, function () {
+                // done
             });
 
         });
@@ -160,11 +153,11 @@ let Bezier = L.Path.extend({
     getMidPoint: function (from, to, deep, round_side = 'LEFT_ROUND') {
 
         let offset = 3.14;
-
-        if (round_side === 'RIGHT_ROUND')
-            offset = offset * -1;
-
         let latlngs = [];
+
+        if (round_side === 'RIGHT_ROUND') {
+            offset = offset * -1;
+        }
 
         let latlng1 = from,
             latlng2 = to;
@@ -214,7 +207,7 @@ let Bezier = L.Path.extend({
     },
     _updatePath: function () {
         //animated plane
-        let path = this._renderer._updatecurve(this);
+        let path = this._renderer._updateCurve(this);
         this.setAnimatePlane(path);
     },
     _project: function () {
@@ -235,24 +228,20 @@ let Bezier = L.Path.extend({
         this._points.push(curPoint);
 
 
-    },
-
-
+    }
 });
 
 L.bezier = function (config, options) {
     let paths = [];
     for (let i = 0; config.path.length > i; i++) {
-        let last_destination = false;
+        let lastDestination = false;
         for (let c = 0; config.path[i].length > c; c++) {
-
-            let current_destination = config.path[i][c];
-            if (last_destination) {
-                let path_pair = {from: last_destination, to: current_destination};
+            let currentDestination = config.path[i][c];
+            if (lastDestination) {
+                let path_pair = {from: lastDestination, to: currentDestination};
                 paths.push(new Bezier(path_pair, config.icon, options));
             }
-
-            last_destination = config.path[i][c];
+            lastDestination = config.path[i][c];
         }
     }
     return L.layerGroup(paths);

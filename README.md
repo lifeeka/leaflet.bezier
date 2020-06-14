@@ -12,7 +12,21 @@ npm i leaflet.bezier --save
 
 ### Usage
 ```js
-   L.bezier({
+    var options = {
+        color: 'rgb(145, 146, 150)',
+        fillColor: 'rgb(145, 146, 150)',
+        dashArray: 8,
+        opacity: 0.8,
+        weight: '1',
+        iconTravelLength: 0.5, //How far icon should go 0.5 = 50%
+        iconMaxWidth: 50,
+        iconMaxHeight: 50,
+        fullAnimatedTime: 7000,// animation time in ms
+        easeOutPiece: 4, // animation easy ou time in ms
+        easeOutTime: 2500, // animation easy ou time in ms
+    };
+
+    L.bezier({
         path: [
             [
                 {lat: 7.8731, lng: 80.7718},
@@ -23,7 +37,7 @@ npm i leaflet.bezier --save
         icon: {
             path: "plane.png"
         }
-    }).addTo(map);
+    },options).addTo(map);
 
 
 ```

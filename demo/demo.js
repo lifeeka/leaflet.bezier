@@ -14,6 +14,12 @@ $(function () {
         dashArray: 8,
         opacity: 0.8,
         weight: '1',
+        iconTravelLength: 1,
+        iconMaxWidth: 50,
+        iconMaxHeight: 50,
+        fullAnimatedTime: 7000,
+        easeOutPiece: 4,
+        easeOutTime: 2500,
     };
 
     L.bezier({
@@ -39,7 +45,6 @@ $(function () {
                 {lat: -18.7669, lng: 46.8691},
             ]
         ],
-
         icon: {
             path: "plane.png"
         }
