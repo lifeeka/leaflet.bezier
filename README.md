@@ -18,7 +18,7 @@ npm i leaflet.bezier --save
         dashArray: 8,
         opacity: 0.8,
         weight: '1',
-        iconTravelLength: 0.5, //How far icon should go 0.5 = 50%
+        iconTravelLength: 0.5, //How far icon should go. 0.5 = 50%
         iconMaxWidth: 50,
         iconMaxHeight: 50,
         fullAnimatedTime: 7000,// animation time in ms
@@ -37,7 +37,7 @@ npm i leaflet.bezier --save
         icon: {
             path: "plane.png"
         }
-    },options).addTo(map);
+    }, options).addTo(map);
 
 
 ```
