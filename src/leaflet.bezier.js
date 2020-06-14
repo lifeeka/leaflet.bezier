@@ -67,6 +67,12 @@ let Bezier = L.Path.extend({
         });
 
     },
+    onRemove: function() {
+        if (this.spaceship_img)
+            this.spaceship_img.remove();
+
+        this._renderer._removePath(this);
+    },
     setAnimatePlane: function (path) {
 
         let self = this;
