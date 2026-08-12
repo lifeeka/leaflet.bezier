@@ -1,5 +1,3 @@
-<p align="center"><img src="https://raw.githubusercontent.com/lifeeka/leaflet.bezier/master/logo.png" alt="leaflet.bezier"></p>
-
 <p align="center">
   <a href="https://www.npmjs.com/package/leaflet.bezier"><img src="https://img.shields.io/npm/v/leaflet.bezier.svg" alt="npm version"></a>
   <a href="https://github.com/lifeeka/leaflet.bezier/actions/workflows/ci.yml"><img src="https://github.com/lifeeka/leaflet.bezier/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
@@ -12,7 +10,7 @@
 
 Animated bezier curves (flight paths) for [Leaflet](https://leafletjs.com/), with an icon that travels along the curve.
 
-![leaflet.bezier demo](https://raw.githubusercontent.com/lifeeka/leaflet.bezier/master/demo/demo.gif)
+![leaflet.bezier demo](demo/demo.gif)
 
 ## Highlights
 
