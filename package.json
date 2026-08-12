@@ -1,23 +1,41 @@
 {
   "name": "leaflet.bezier",
-  "version": "0.1.1",
-  "description": "Leaflet curve line",
-  "main": "dist/leaflet.bezier.js",
+  "version": "2.0.0",
+  "description": "Animated bezier curves (flight paths) for Leaflet",
+  "type": "module",
+  "main": "./dist/leaflet.bezier.cjs",
+  "module": "./dist/leaflet.bezier.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/leaflet.bezier.mjs",
+      "require": "./dist/leaflet.bezier.cjs"
+    }
+  },
+  "unpkg": "./dist/leaflet.bezier.global.js",
+  "jsdelivr": "./dist/leaflet.bezier.global.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npm run build && npm run open",
-    "build": "export $(cat .env | xargs) && sh build.sh",
-    "open": "node  node_modules/http-server/bin/http-server -o"
+    "build": "rm -rf dist && tsup",
+    "dev": "vite demo",
+    "test": "vitest run",
+    "lint": "eslint src test",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run typecheck && npm test && npm run build"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lifeeka/leaflet.bezier.git"
   },
   "keywords": [
-    "Leaflet",
+    "leaflet",
+    "leaflet-plugin",
     "flight",
     "curve",
-    "round",
+    "animation",
     "line",
     "route",
     "bezier"
@@ -28,40 +46,18 @@
     "url": "https://github.com/lifeeka/leaflet.bezier/issues"
   },
   "homepage": "https://github.com/lifeeka/leaflet.bezier#readme",
-  "dependencies": {
-    "leaflet": "^1.3.1",
-    "snapsvg": "^0.5.1"
+  "peerDependencies": {
+    "leaflet": ">=1.3.0 <3.0.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.0.0",
-    "@babel/core": "^7.0.0",
-    "@babel/node": "^7.10.1",
-    "@babel/plugin-proposal-class-properties": "^7.10.1",
-    "@babel/plugin-transform-flow-strip-types": "^7.10.1",
-    "@babel/plugin-transform-runtime": "^7.10.1",
-    "@babel/preset-env": "^7.10.2",
-    "@babel/preset-flow": "^7.10.1",
-    "@babel/runtime": "^7.10.2",
-    "babel-eslint": "^10.1.0",
-    "babel-plugin-module-resolver": "^4.0.0",
-    "babel-plugin-transform-inline-environment-variables": "^0.4.3",
-    "babel-plugin-transform-remove-console": "^6.8.5",
-    "babel-preset-es2015": "^6.24.1",
-    "chai": "^4.1.2",
-    "eslint": "7.2",
-    "eslint-config-airbnb": "^18.2.0",
-    "eslint-config-google": "^0.14.0",
-    "eslint-config-prettier": "^6.11.0",
-    "eslint-plugin-flowtype": "^5.1.3",
-    "eslint-plugin-import": "^2.22.0",
-    "eslint-plugin-jsx-a11y": "^6.3.1",
-    "eslint-plugin-prettier": "^3.1.4",
-    "eslint-plugin-react": "^7.20.0",
-    "flow-bin": "^0.137.0",
-    "http-server": "^0.11.1",
-    "mocha": "^4.0.1"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
+    "@types/leaflet": "^1.9.12",
+    "eslint": "^9.9.0",
+    "jsdom": "^25.0.0",
+    "leaflet": "^1.9.4",
+    "tsup": "^8.2.4",
+    "typescript": "^5.5.4",
+    "typescript-eslint": "^8.2.0",
+    "vite": "^5.4.2",
+    "vitest": "^2.0.5"
   }
 }

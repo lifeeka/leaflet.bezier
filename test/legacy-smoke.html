@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>leaflet.bezier v1-style smoke test</title>
+  <link rel="stylesheet" href="/node_modules/leaflet/dist/leaflet.css" />
+  <script src="/node_modules/leaflet/dist/leaflet.js"></script>
+  <script src="/dist/leaflet.bezier.global.js"></script>
+  <style>
+    body { margin: 0; }
+    #map { position: fixed; inset: 0; }
+  </style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+  var map = L.map('map').setView([6.9270786, 79.861243], 3);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png').addTo(map);
+
+  // exact v1 README options
+  var group = L.bezier({
+    path: [
+      [
+        {lat: 7.8731, lng: 80.7718},
+        {lat: -18.7669, lng: 46.8691},
+      ]
+    ],
+    icon: { path: '/demo/plane.png' }
+  }, {
+    color: 'rgb(145, 146, 150)',
+    fillColor: 'rgb(145, 146, 150)',
+    dashArray: 8,
+    opacity: 0.8,
+    weight: '1',
+    iconTravelLength: 0.5,
+    iconMaxWidth: 50,
+    iconMaxHeight: 50,
+    fullAnimatedTime: 7000,
+    easeOutPiece: 4,
+    easeOutTime: 2500,
+  }).addTo(map);
+
+  window.__group = group;
+  console.log('smoke: layers=' + group.getLayers().length);
+</script>
+</body>
+</html>

@@ -1,38 +1,53 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Leaflet Bezier</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
-    <script src="/node_modules/snapsvg/dist/snap.svg-min.js"></script>
-    <link rel="stylesheet" href="/node_modules/leaflet/dist/leaflet.css"/>
-    <script src="/node_modules/leaflet/dist/leaflet.js"></script>
-    <script src="/dist/leaflet.bezier.js" crossorigin=""></script>
-    <script src="demo.js" crossorigin=""></script>
+  <meta charset="UTF-8" />
+  <title>Leaflet Bezier</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      height: 100%;
+      width: 100%;
+      padding: 0;
+      margin: 0;
+      font-family: system-ui, sans-serif;
+    }
 
-    <style>
-        body {
-            height: 100%;
-            width: 100%;
-            padding: 0;
-            margin: 0;
+    #map {
+      width: inherit;
+      height: inherit;
+      position: fixed !important;
+      outline: none;
+    }
 
-        }
+    #controls {
+      position: fixed;
+      bottom: 16px;
+      left: 16px;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 8px;
+      padding: 10px 12px;
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
 
-        #map {
-            width: inherit;
-            height: inherit;
-            position: fixed !important;
-            outline: none;
-        }
-
-    </style>
-
-
+    #controls button {
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-<div id="map" style=""></div>
-
+<div id="map"></div>
+<div id="controls">
+  <button id="play">Play</button>
+  <button id="pause">Pause</button>
+  <button id="stop">Stop</button>
+  <button id="reverse">Reverse</button>
+  <label>Speed <input id="speed" type="range" min="0.25" max="4" step="0.25" value="1" /></label>
+</div>
+<script type="module" src="./main.ts"></script>
 </body>
 </html>
