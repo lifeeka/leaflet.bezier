@@ -103,6 +103,7 @@ export class PathAnimator {
   }
 
   private frame = (now: number): void => {
+    if (!this.playing) return; // stray rAF callback after pause()
     if (this.lastTick == null) this.lastTick = now;
     const dt = ((now - this.lastTick) / this.opts.duration) * this.speed * this.direction;
     this.lastTick = now;

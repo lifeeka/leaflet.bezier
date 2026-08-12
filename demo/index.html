@@ -20,18 +20,36 @@
       outline: none;
     }
 
+    #map {
+      background: #090909;
+    }
+
     #controls {
       position: fixed;
       bottom: 16px;
       left: 16px;
       z-index: 1000;
-      background: rgba(255, 255, 255, 0.92);
+      background: rgba(20, 20, 24, 0.85);
+      color: #eee;
+      border: 1px solid rgba(255, 255, 255, 0.15);
       border-radius: 8px;
       padding: 10px 12px;
-      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
       display: flex;
       gap: 8px;
       align-items: center;
+    }
+
+    #controls button {
+      background: #2a2a30;
+      color: #eee;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 5px;
+      padding: 4px 10px;
+    }
+
+    #controls button:hover {
+      background: #3a3a42;
     }
 
     #controls button {
