@@ -41,12 +41,16 @@ describe('TravelIcon', () => {
     expect(inner.getAttribute('width')).toBe('26');
   });
 
-  it('positions with tangent rotation offset by -90 (v1 convention)', () => {
+  it('rotates up-pointing artwork onto the travel tangent', () => {
     const icon = new TravelIcon(root, { path: 'p.png', size: 20 }, [40, 40]);
+    // moving straight down the screen (tangent 90deg): nose must point down (180)
     icon.setPosition(100, 50, 90);
     expect(icon.el.getAttribute('transform')).toBe(
-      'translate(100 50) scale(1) rotate(0) translate(-10 -10)',
+      'translate(100 50) scale(1) rotate(180) translate(-10 -10)',
     );
+    // moving right (tangent 0): nose points right (90 from up)
+    icon.setPosition(100, 50, 0);
+    expect(icon.el.getAttribute('transform')).toContain('rotate(90)');
   });
 
   it('honors rotate: false and rotationOffset', () => {
@@ -54,14 +58,14 @@ describe('TravelIcon', () => {
     fixed.setPosition(0, 0, 45);
     expect(fixed.el.getAttribute('transform')).toContain('rotate(0)');
 
-    const offset = new TravelIcon(root, { path: 'p.png', size: 20, rotationOffset: 90 }, [40, 40]);
+    const offset = new TravelIcon(root, { path: 'p.png', size: 20, rotationOffset: -90 }, [40, 40]);
     offset.setPosition(0, 0, 45);
     expect(offset.el.getAttribute('transform')).toContain('rotate(45)');
   });
 
   it('reapplies the last position when zoom scale changes', () => {
     const icon = new TravelIcon(root, { path: 'p.png', size: 20, scaleWithZoom: true }, [40, 40]);
-    icon.setPosition(10, 20, 90);
+    icon.setPosition(10, 20, -90);
     icon.setZoomScale(2);
     expect(icon.el.getAttribute('transform')).toBe(
       'translate(10 20) scale(2) rotate(0) translate(-10 -10)',

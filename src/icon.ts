@@ -66,8 +66,8 @@ export class TravelIcon {
 
   setPosition(x: number, y: number, angleDeg: number): void {
     this.last = { x, y, angle: angleDeg };
-    // -90 maps the tangent angle onto up-pointing artwork, matching v1
-    const rotate = this.opts.rotate === false ? 0 : angleDeg - 90 + (this.opts.rotationOffset ?? 0);
+    // +90 maps the tangent angle (atan2, screen coords) onto up-pointing artwork
+    const rotate = this.opts.rotate === false ? 0 : angleDeg + 90 + (this.opts.rotationOffset ?? 0);
     this.el.setAttribute(
       'transform',
       `translate(${x} ${y}) scale(${this.zoomScale}) rotate(${rotate}) translate(${-this.w / 2} ${-this.h / 2})`,
