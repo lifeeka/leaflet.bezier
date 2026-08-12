@@ -121,6 +121,7 @@ flights.eachLayer((flight) => {
     flight.stop();          // rewind to start
     flight.reverse();
     flight.setSpeed(2);
+    flight.setProgress(0.5); // static icon halfway along the path, no animation
     flight.bindPopup('Colombo to Antananarivo');
 
     flight.on('animationstart', ...);

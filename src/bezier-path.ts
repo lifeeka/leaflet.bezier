@@ -147,6 +147,7 @@ export interface BezierLayer {
   stop(): this;
   reverse(): this;
   setSpeed(speed: number): this;
+  setProgress(progress: number): this;
   getPath(): BezierSegmentSpec;
   setPath(spec: BezierSegmentSpec): this;
   getBounds(): LatLngBoundsType;
@@ -225,6 +226,17 @@ export const BezierPath = Path.extend({
 
   setSpeed(this: any, speed: number) {
     this._animator?.setSpeed(speed);
+    return this;
+  },
+
+  /** Place the icon statically at a fraction of the travel path (0..1), no animation. */
+  setProgress(this: any, progress: number) {
+    if (this._animator) {
+      this._animator.pause();
+      this._animator.progress = progress; // play() resumes from here
+    }
+    this._icon?.show();
+    this._positionIcon(progress); // exact fraction, not eased
     return this;
   },
 

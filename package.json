@@ -1,6 +1,6 @@
 {
   "name": "leaflet.bezier",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "Animated bezier curves (flight paths) for Leaflet",
   "type": "module",
   "main": "./dist/leaflet.bezier.cjs",
